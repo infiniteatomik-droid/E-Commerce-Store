@@ -1,40 +1,39 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { IProduct, IProductsState } from '../../types/product';
 
-export const fetchProducts = createAsyncThunk(
+export const fetchProducts = createAsyncThunk<IProduct[], void>(
   'products/fetchProducts',
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
       if (!response.ok) {
-        throw new Error('Ошибка при загрузке данных с сервера');
+        throw new Error('Failed to load data from the server. Please try again');
       }
       const data = await response.json();
       return data.products;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error instanceof Error ? error.message: 'Unknown error');
     }
   }
 );
 
-export const fetchProductsById = createAsyncThunk(
+export const fetchProductsById = createAsyncThunk<IProduct, number | string>(
   'products/fetchProductsById',
   async (id, { rejectWithValue }) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${id}`);
       if (!response.ok) {
-        throw new Error('Ошибка при загрузке данных с сервера');
+        throw new Error('Failed to load data from the server. Please try again');
       }
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error instanceof Error ? error.message: 'Unknown error');
     }
   }
 );
 
-const productSlice = createSlice({
-  name: 'products',
-  initialState: {
+const initialState: IProductsState = {
     currentProduct: null,
     items: [],
     isLoading: false,
@@ -42,7 +41,11 @@ const productSlice = createSlice({
     search: '',
     category: 'All',
     sort: 'default'
-  },
+  };
+
+const productSlice = createSlice({
+  name: 'products',
+  initialState,
   reducers: {
     setSearch: (state, action) => {
       state.search = action.payload;
@@ -70,7 +73,7 @@ const productSlice = createSlice({
       return {
         ...product,
         title: "iPhone 16 Pro Max",
-        description: "Флагман 2026 года с чипом A18 Pro, кнопкой Camera Control и титановым корпусом цвета Desert Titanium.",
+        description: "2026 flagship featuring the A18 Pro chip, Camera Control button, and a titanium chassis in Desert Titanium",
         price: 1199,
         thumbnail: 'https://cdn.dummyjson.com/products/images/smartphones/iPhone%2013%20Pro/thumbnail.png'
       }
@@ -79,7 +82,7 @@ const productSlice = createSlice({
       return {
         ...product,
         title: "Samsung Galaxy S26 Ultra",
-        description: "Ультимативный флагман на Snapdragon 8 Gen 5, с камерой 200 Мп, встроенным стилусом S Pen и передовым Galaxy AI.",
+        description: "The ultimate flagship powered by Snapdragon 8 Gen 5, featuring a 200 MP camera, built-in S Pen, and cutting-edge Galaxy AI.",
         price: 1299,
         thumbnail: 'https://www.myphone.kg/cache/files/29495.jpg_w800_h800_resize.jpg'
       };

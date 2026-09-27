@@ -1,11 +1,10 @@
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import { useNavigate } from "react-router-dom";
 import { decrementItemQuantity, addItem, removeItem, clearCart } from '../features/cart/CartSlice';
 import { useState } from "react";
 
 export default function Cart() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -13,19 +12,19 @@ const handleCheckout = () => {
     dispatch(clearCart());
     setIsSuccessModalOpen(true);
 }
-const {cartItems, totalPrice, totalQuantity} = useSelector((state) => 
+const {cartItems, totalPrice, totalQuantity} = useAppSelector((state) => 
     state.cart
 );
 
 if(cartItems.length === 0 && !isSuccessModalOpen) {
     return(
         <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
-            <h2 className="text-2xl font-bold">Корзина пуста</h2>
+            <h2 className="text-2xl font-bold">Your cart is empty</h2>
             <h3 className="text-gray-500">
-                Посмотрите каталог на главной странице, чтобы найти что-нибудь интересное
+                Check out our catalog on the homepage to find more interesting items.
             </h3>
             <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
-             onClick={() => navigate('/')}>Вернуться в каталог
+             onClick={() => navigate('/')}>Back to Catalog
              </button>
         </div>
     )
@@ -67,27 +66,27 @@ return(
                             className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-sm ml-4"
                             onClick={() => dispatch(removeItem(item.id))}
                         >
-                            Удалить
+                            Delete
                         </button>                    
                     </div>
                 ))}
             </div>
 
             <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 h-fit sticky top-6">
-                <p className="text-xl font-bold mb-2">Итого: ${totalPrice}</p>
-                <p className="text-gray-600 mb-6">Товаров в заказе: {totalQuantity} шт.</p>
+                <p className="text-xl font-bold mb-2">Total: ${totalPrice}</p>
+                <p className="text-gray-600 mb-6">Total Items: {totalQuantity}</p>
                 
                 <button 
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-sm mb-3"
                 onClick={handleCheckout}>
-                    Оформить заказ
+                    Proceed to checkout
                 </button>
                 
                 <button 
                     className="w-full text-red-600 hover:text-red-700 font-medium py-2 text-sm border border-red-200 rounded-lg hover:bg-red-50 transition"
                     onClick={() => dispatch(clearCart())}
                 >
-                    Очистить корзину
+                    Clear Cart
                 </button>
             </div>
       {isSuccessModalOpen && (
@@ -98,15 +97,15 @@ return(
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">Заказ оформлен!</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">Order Confirmed!</h3>
             <p className="text-slate-500 text-sm mb-6">
-              Спасибо за покупку. Наш менеджер уже собирает вашу посылку! 📦
+              Thank you for your purchase! Our team is already packing your order!
             </p>
             <button
               onClick={() => setIsSuccessModalOpen(false)}
               className="w-full py-3 px-4 bg-gradient-to-r cursor-pointer from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium rounded-xl shadow-lg"
             >
-              Отлично
+              OK
             </button>
           </div>
         </div>

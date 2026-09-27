@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../app/store';
 import { fetchProducts, setSearch, setCategory, setSort } from '../features/products/productSlice';
 import {addItem} from '../features/cart/CartSlice';
 export default function Home() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-  const search = useSelector((state) => state.products.search);
-  const category = useSelector((state) => state.products.category);
-  const sort = useSelector((state) => state.products.sort);
-  const { items, isLoading, error } = useSelector((state) => state.products);
+  const search = useAppSelector((state) => state.products.search);
+  const category = useAppSelector((state) => state.products.category);
+  const sort = useAppSelector((state) => state.products.sort);
+  const { items, isLoading, error } = useAppSelector((state) => state.products);
 
   const fItems = useMemo(() => {let fItems = items.filter(product => 
     product.title.toLowerCase().includes(search.toLowerCase())
@@ -56,16 +56,15 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
   if (error) {
     return (
       <div className="text-center text-red-600 font-semibold p-4 bg-red-50 rounded-lg">
-        Ошибка: {error}
+        Error: {error}
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Каталог смартфонов</h1>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">Smartphone Catalog</h1>
       
-      {/* ПАНЕЛЬ ФИЛЬТРОВ */}
       <div className='flex flex-col gap-6 p-4 bg-white rounded-xl shadow-sm border border-gray-100 mb-8'> 
         <div className='flex flex-col md:flex-row gap-4 w-full'>
           <input 
@@ -80,9 +79,9 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
             className='px-4 py-2.5 border border-gray-300 rounded-lg bg-white outline-none focus:ring-2 focus:ring-blue-500'
             onChange={(e) => dispatch(setSort(e.target.value))}
           >
-            <option value="default">По умолчанию</option>
-            <option value="low-to-high">Сначала дешевые</option>
-            <option value="high-to-low">Сначала дорогие</option>
+            <option value="default">Default</option>
+            <option value="low-to-high">Price: Low to High</option>
+            <option value="high-to-low">Price: High to Low</option>
           </select>
         </div>
         <div className='flex flex-wrap gap-2'>
@@ -101,12 +100,11 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
         </div>
       </div>
 
-      {/* СЕТКА ТОВАРОВ */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {fItems.length === 0 ? (
           <div className="text-center py-12 text-gray-500 col-span-full">
-            <p className="text-xl font-medium">Товары не найдены 🔍</p>
-            <p className="text-sm mt-1">Попробуйте изменить параметры поиска или фильтр</p>
+            <p className="text-xl font-medium">No products found</p>
+            <p className="text-sm mt-1">Try adjusting your search or filters</p>
           </div>
         ) : (
           currentItems.map((product) => (
@@ -128,7 +126,7 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
                     onClick={() => dispatch(addItem(product))}
                     className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
                   >
-                    В корзину
+                    Add to cart
                   </button>
                 </div>
               </div>
@@ -136,7 +134,6 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
           ))
         )}
       </div>
-      {/* БЛОК ПАГИНАЦИИ */}
       {totalPages > 1 && (
         <div className='flex justify-center items-center gap-2 mt-8'>
           <button
@@ -144,7 +141,7 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
           onClick={() => setCurrentPage(prev => prev - 1)}
           className='px-4 py-2 border rounded-lg bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition'
             >
-              Назад
+              Back
             </button>
             {Array.from({length: totalPages}, (_, index) => {
               const pageNumber = index + 1;
@@ -164,7 +161,7 @@ const totalPages = Math.ceil(fItems.length / itemsPerPage);
             onClick={() => setCurrentPage(prev => prev + 1)}
             className='px-4 py-2 border rounded-lg bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition'
             >
-              Вперед
+              Next
             </button>
         </div>
       )}
