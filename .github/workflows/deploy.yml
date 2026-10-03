@@ -30,11 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./E-Commerce-Store
 
       - name: Build
         run: npm run build
-        working-directory: ./E-Commerce-Store
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -42,9 +40,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './E-Commerce-Store/dist'
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
