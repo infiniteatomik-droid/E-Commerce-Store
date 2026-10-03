@@ -5,7 +5,7 @@ export const fetchProducts = createAsyncThunk<IProduct[], void>(
   'products/fetchProducts',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
+      const response = await fetch('https://dummyjson.com/products');
       if (!response.ok) {
         throw new Error('Failed to load data from the server. Please try again');
       }
@@ -21,7 +21,7 @@ export const fetchProductsById = createAsyncThunk<IProduct, number | string>(
   'products/fetchProductsById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${id}`);
+      const response = await fetch(`https://dummyjson.com/products/${id}`);
       if (!response.ok) {
         throw new Error('Failed to load data from the server. Please try again');
       }
