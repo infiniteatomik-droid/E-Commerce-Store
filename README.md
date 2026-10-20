@@ -5,7 +5,7 @@ A modern, high-performance, and responsive e-commerce web application built usin
 ---
 
 ##  Live Demo
- [Explore the Live Marketplace](infiniteatomik-droid.github.io/E-Commerce-Store/)
+ [Explore the Live Marketplace](https://infiniteatomik-droid.github.io/E-Commerce-Store/)
 
 ---
 
