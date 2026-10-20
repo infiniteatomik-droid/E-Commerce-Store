@@ -1,4 +1,4 @@
-#  🛒 Fully Type-Safe E-Commerce Store
+#  🛒Fully Type-Safe E-Commerce Store
 
 A modern, high-performance, and responsive e-commerce web application built using **React 18**, **Vite**, and **TypeScript**. The application utilizes **Redux Toolkit** for robust global state management and connects to a live mock backend.
 
