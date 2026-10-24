@@ -34,7 +34,7 @@ Follow these steps to spin up the store locally on your machine:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com
+   git clone https://github.com/infiniteatomik-droid/E-Commerce-Store
    ```
 
 2. **Navigate into the project directory:**
